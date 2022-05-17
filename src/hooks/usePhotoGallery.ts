@@ -96,11 +96,17 @@ export function usePhotoGallery() {
         setPhotos(newPhotos);
         Storage.set({ key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
     };
-
+    const deletePhoto = async (photo: string) => {
+        await deletePicture(photo);
+        Storage.remove({key: PHOTO_STORAGE});
+        console.log(photos);
+    
+      }
 
     return {
         photos,
         takePhoto,
+        deletePhoto
     };
 }
 
@@ -108,7 +114,18 @@ export interface UserPhoto {
     filepath: string;
     webviewPath?: string;
 }
-
+const deletePicture = async ( fileName: string) => {
+  
+  
+    const savedFile = await Filesystem.deleteFile({
+      path: fileName,
+      directory: Directory.Data,
+    });
+  
+  
+    
+  
+  };
 export async function base64FromPath(path: string): Promise<string> {
     const response = await fetch(path);
     const blob = await response.blob();

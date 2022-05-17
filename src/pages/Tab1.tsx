@@ -1,5 +1,8 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
+import { CapacitorConfig } from '@capacitor/cli';
 import ExploreContainer from '../components/ExploreContainer';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Toast } from '@capacitor/toast';
 import './Tab1.css';
 
 const Tab1: React.FC = () => {
@@ -7,19 +10,37 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Notificaciones</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
+            <IonTitle size="large">Notificacion</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
+        <IonButton onClick={() => newNotification()} expand="block" color='primary' shape='round'>Notificacion</IonButton>
+        <IonButton onClick={() => showHelloToast()} expand="block" color='primary' shape='round'>Mostrar Toast</IonButton>
       </IonContent>
     </IonPage>
   );
 };
 
 export default Tab1;
+async function newNotification() {
+
+  await LocalNotifications.schedule({
+    notifications: [{
+      title: 'Nueva Notificacion',
+      body:   "Hola Mundo",
+      id: 1,
+      
+    }]
+  });
+  console.log("listo");
+}
+const showHelloToast = async () => {
+  await Toast.show({
+    text: 'Hola Mundo',
+  });
+};
